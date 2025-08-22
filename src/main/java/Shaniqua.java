@@ -38,7 +38,8 @@ public class Shaniqua {
                 String[] params = Shaniqua.handleDeadline(commands[1]);
                 tasks.addTask(new Deadline(params[0], params[1]));
             } else if (commands[0].equals("event")){
-                tasks.addTask(new Task(in));
+                String[] params = Shaniqua.handleEvent(commands[1]);
+                tasks.addTask(new Event(params[0], params[1], params[2]));
             }
         }
     }
@@ -58,6 +59,9 @@ public class Shaniqua {
     }
     private static String[] handleDeadline(String param) {
         return param.split("/by");
+    }
+    private static String[] handleEvent(String param) {
+        return param.split("/to|/from");
     }
     private static boolean integerCheck(String param) {
         try {
