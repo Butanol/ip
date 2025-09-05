@@ -9,39 +9,44 @@ public class Shaniqua {
             try {
                 String in = input.nextLine();
                 String[] commands = Shaniqua.handleInput(in);
-                if (commands[0].equals("bye")) {
-                    System.out.println("Bye. Hope to see you again soon!");
-                    return;
-                } else if (commands[0].equals("list")) {
-                    tasks.list();
-                } else if (commands[0].equals("mark")) {
-                    if (!Shaniqua.integerCheck(commands[1])) {
-                        throw new ChatException("Invalid task");
+                switch (commands[0]) {
+                    case "bye" -> {
+                        System.out.println("Bye. Hope to see you again soon!");
+                        return;
                     }
-                    int nums = Integer.parseInt(commands[1]);
-                    tasks.mark(nums);
-                    System.out.printf("Nice! I've marked this as done:\n%s\n", tasks.getTask(nums - 1));
-                } else if (commands[0].equals("unmark")) {
-                    if (!Shaniqua.integerCheck(commands[1])) {
-                        throw new ChatException("Invalid task");
+                    case "list" -> tasks.list();
+                    case "mark" -> {
+                        if (!Shaniqua.integerCheck(commands[1])) {
+                            throw new ChatException("Invalid task");
+                        }
+                        int nums = Integer.parseInt(commands[1]);
+                        tasks.mark(nums);
+                        System.out.printf("Nice! I've marked this as done:\n%s\n", tasks.getTask(nums - 1));
                     }
-                    int nums = Integer.parseInt(commands[1]);
-                    tasks.unmark(nums);
-                    System.out.printf("Nice! I've marked this as done:\n%s\n", tasks.getTask(nums - 1));
-                } else if (commands[0].equals("remove")){
-                    if (!Shaniqua.integerCheck(commands[1])) {
-                        throw new ChatException("Invalid task");
+                    case "unmark" -> {
+                        if (!Shaniqua.integerCheck(commands[1])) {
+                            throw new ChatException("Invalid task");
+                        }
+                        int nums = Integer.parseInt(commands[1]);
+                        tasks.unmark(nums);
+                        System.out.printf("Nice! I've marked this as done:\n%s\n", tasks.getTask(nums - 1));
                     }
-                    int nums = Integer.parseInt(commands[1]);
-                    tasks.remove(nums);
-                } else if (commands[0].equals("todo")) {
-                    tasks.addTask(new Todo(commands[1]));
-                } else if (commands[0].equals("deadline")) {
-                    String[] params = Shaniqua.handleDeadline(commands[1]);
-                    tasks.addTask(new Deadline(params[0], params[1]));
-                } else if (commands[0].equals("event")) {
-                    String[] params = Shaniqua.handleEvent(commands[1]);
-                    tasks.addTask(new Event(params[0], params[1], params[2]));
+                    case "remove" -> {
+                        if (!Shaniqua.integerCheck(commands[1])) {
+                            throw new ChatException("Invalid task");
+                        }
+                        int nums = Integer.parseInt(commands[1]);
+                        tasks.remove(nums);
+                    }
+                    case "todo" -> tasks.addTask(new Todo(commands[1]));
+                    case "deadline" -> {
+                        String[] params = Shaniqua.handleDeadline(commands[1]);
+                        tasks.addTask(new Deadline(params[0], params[1]));
+                    }
+                    case "event" -> {
+                        String[] params = Shaniqua.handleEvent(commands[1]);
+                        tasks.addTask(new Event(params[0], params[1], params[2]));
+                    }
                 }
             } catch (UnsuccessfulException e){
                 System.out.println("Oh non, I can't do that ja. " + e.getMessage() + "!");
