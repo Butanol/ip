@@ -6,40 +6,47 @@ public class Shaniqua {
         Scanner input = new Scanner(System.in);
         System.out.print("Kia Ora! I'm Shaniqua!\nWhat can I do for you?\n");
         while (true) {
-            String in = input.nextLine();
-            String[] commands = Shaniqua.handleInput(in);
-            if (commands[0].equals("bye")) {
-                System.out.println("Bye. Hope to see you again soon!");
-                return;
-            } else if (commands[0].equals("list")) {
-                tasks.list();
-            } else if (commands[1].contains("mark")) {
-                if (!Shaniqua.integerCheck(commands[1])) {
-                    System.out.println("Invalid Task");
-                    continue;
-                }
-                int nums = Integer.parseInt(commands[1]);
-                if (tasks.mark(nums)) {
+            try {
+                String in = input.nextLine();
+                String[] commands = Shaniqua.handleInput(in);
+                if (commands[0].equals("bye")) {
+                    System.out.println("Bye. Hope to see you again soon!");
+                    return;
+                } else if (commands[0].equals("list")) {
+                    tasks.list();
+                } else if (commands[0].equals("mark")) {
+                    if (!Shaniqua.integerCheck(commands[1])) {
+                        throw new ChatException("Invalid task");
+                    }
+                    int nums = Integer.parseInt(commands[1]);
+                    tasks.mark(nums);
                     System.out.printf("Nice! I've marked this as done:\n%s\n", tasks.getTask(nums - 1));
-                }
-            } else if (commands[0].equals("unmark")) {
-                String[] temp = in.split(" ");
-                if (temp.length > 2) {
-                    System.out.println("Invalid mark input");
-                    continue;
-                }
-                int nums = Integer.parseInt(temp[1]);
-                if (tasks.unmark(nums)) {
+                } else if (commands[0].equals("unmark")) {
+                    if (!Shaniqua.integerCheck(commands[1])) {
+                        throw new ChatException("Invalid task");
+                    }
+                    int nums = Integer.parseInt(commands[1]);
+                    tasks.unmark(nums);
                     System.out.printf("Nice! I've marked this as done:\n%s\n", tasks.getTask(nums - 1));
+                } else if (commands[0].equals("remove")){
+                    if (!Shaniqua.integerCheck(commands[1])) {
+                        throw new ChatException("Invalid task");
+                    }
+                    int nums = Integer.parseInt(commands[1]);
+                    tasks.remove(nums);
+                } else if (commands[0].equals("todo")) {
+                    tasks.addTask(new Todo(commands[1]));
+                } else if (commands[0].equals("deadline")) {
+                    String[] params = Shaniqua.handleDeadline(commands[1]);
+                    tasks.addTask(new Deadline(params[0], params[1]));
+                } else if (commands[0].equals("event")) {
+                    String[] params = Shaniqua.handleEvent(commands[1]);
+                    tasks.addTask(new Event(params[0], params[1], params[2]));
                 }
-            } else if (commands[0].equals("todo")){
-                tasks.addTask(new Todo(commands[1]));
-            } else if (commands[0].equals("deadline")) {
-                String[] params = Shaniqua.handleDeadline(commands[1]);
-                tasks.addTask(new Deadline(params[0], params[1]));
-            } else if (commands[0].equals("event")){
-                String[] params = Shaniqua.handleEvent(commands[1]);
-                tasks.addTask(new Event(params[0], params[1], params[2]));
+            } catch (UnsuccessfulException e){
+                System.out.println("Oh non, I can't do that ja. " + e.getMessage() + "!");
+            } catch (ChatException e) {
+                System.out.println("Oops, I've got an error: " + e.getMessage());
             }
         }
     }
@@ -57,10 +64,15 @@ public class Shaniqua {
         }
         return new String[]{temp[0], x.toString(), };
     }
-    private static String[] handleDeadline(String param) {
-        return param.split("/by");
+
+    private static String[] handleDeadline(String param) throws ChatException {
+        String[] res = param.split("/by");
+        if (res.length == 1) throw new InsufficientException();
+        return res;
     }
-    private static String[] handleEvent(String param) {
+    private static String[] handleEvent(String param) throws ChatException{
+        String[] res = param.split("/by|/from");
+        if (res.length < 3) throw new InsufficientException();
         return param.split("/to|/from");
     }
     private static boolean integerCheck(String param) {
