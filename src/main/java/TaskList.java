@@ -71,7 +71,7 @@ public class TaskList implements Serializable {
      * Loads saved tasks.
      *
      * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws UnsuccessfulException
      *
      */
     public void loadTasks() throws IOException, UnsuccessfulException {

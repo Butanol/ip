@@ -19,7 +19,7 @@ public class Shaniqua {
                     tasks.list();
                     break;
                 case "mark":
-                    if (!Shaniqua.integerCheck(commands[1])) {
+                    if (!Shaniqua.isInteger(commands[1])) {
                         throw new ChatException("Invalid task");
                     }
                     int idxA = Integer.parseInt(commands[1]);
@@ -28,7 +28,7 @@ public class Shaniqua {
                             tasks.getTask(idxA - 1));
                     break;
                 case "unmark":
-                    if (!Shaniqua.integerCheck(commands[1])) {
+                    if (!Shaniqua.isInteger(commands[1])) {
                         throw new ChatException("Invalid task");
                     }
                     int idxB = Integer.parseInt(commands[1]);
@@ -37,7 +37,7 @@ public class Shaniqua {
                             tasks.getTask(idxB - 1));
                     break;
                 case "remove":
-                    if (!Shaniqua.integerCheck(commands[1])) {
+                    if (!Shaniqua.isInteger(commands[1])) {
                         throw new ChatException("Invalid task");
                     }
                     int idxC = Integer.parseInt(commands[1]);
@@ -74,7 +74,6 @@ public class Shaniqua {
                 System.out.println("Oops, I've got an error: " + e.getMessage());
             } catch (IOException e) {
                 System.out.println("Oops, I can't do that! " + e.getMessage());
-                e.printStackTrace();
             }
         }
     }
@@ -103,7 +102,7 @@ public class Shaniqua {
         if (res.length < 3) throw new InsufficientException();
         return param.split("/to|/from");
     }
-    private static boolean integerCheck(String param) {
+    private static boolean isInteger(String param) {
         try {
             Integer.valueOf(param);
             return true;
