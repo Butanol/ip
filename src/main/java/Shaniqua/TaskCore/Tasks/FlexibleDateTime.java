@@ -1,4 +1,4 @@
-package Shaniqua;
+package Shaniqua.TaskCore.Tasks;
 
 import java.io.Serializable;
 
@@ -6,8 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
-import static Shaniqua.Shaniqua.isInteger;
 
 public class FlexibleDateTime implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -17,12 +15,11 @@ public class FlexibleDateTime implements Serializable {
         this.dateTime = dateTime;
         this.hasTime = hasTime;
     }
-    static FlexibleDateTime parse(String in) throws UnsuccessfulException{
+    public static FlexibleDateTime parse(String in) throws FlexibleDateTimeException {
         LocalDateTime tempDateTime = null;
         boolean hasTimeTemp = false;
         try {
             if (isDateTime(in)) {
-                System.out.println(1);
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d HHmm");
                 tempDateTime = LocalDateTime.parse(in, formatter);
                 hasTimeTemp = true;
@@ -34,9 +31,9 @@ public class FlexibleDateTime implements Serializable {
                 return new FlexibleDateTime(tempDateTime, hasTimeTemp);
             }
         } catch (DateTimeParseException e) {
-            throw new UnsuccessfulException("Parse Error");
+            throw new FlexibleDateTimeException("Parse Error");
         }
-        throw new UnsuccessfulException("Invalid Input");
+        throw new FlexibleDateTimeException("Invalid Input");
     };
     private static boolean isDate(String date) {
         String[] dateArr = date.split("-");
@@ -60,11 +57,20 @@ public class FlexibleDateTime implements Serializable {
         if (dateTimeArr.length != 2) return false;
         return isDate(dateTimeArr[0]) && isTime(dateTimeArr[1]);
     }
+
+    private static boolean isInteger(String param) {
+        try {
+            Integer.valueOf(param);
+            return true;
+        } catch (final NumberFormatException e) {
+            return false;
+        }
+    }
+
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(" h a");
         return  dateTime.toLocalDate().format(formatter) + (hasTime ? dateTime.toLocalTime().format(timeFormatter) : "");
     }
-
 }

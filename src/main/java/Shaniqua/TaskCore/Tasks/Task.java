@@ -1,16 +1,14 @@
-package Shaniqua;
+package Shaniqua.TaskCore.Tasks;
 
 import java.io.Serializable;
-
-import static Shaniqua.Shaniqua.isInteger;
 
 public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     private boolean done;
     private final String name;
-    public Task(String name) throws InsufficientException{
+    public Task(String name) throws InvalidTaskDataException {
         if (name == "" || name == null) {
-            throw new InsufficientException();
+            throw new InvalidTaskDataException("Please input name");
         }
         this.name = name;
         this.done = false;
