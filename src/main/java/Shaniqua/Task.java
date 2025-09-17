@@ -1,10 +1,17 @@
+package Shaniqua;
+
 import java.io.Serializable;
+
+import static Shaniqua.Shaniqua.isInteger;
 
 public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     private boolean done;
     private final String name;
-    public Task(String name) {
+    public Task(String name) throws InsufficientException{
+        if (name == "" || name == null) {
+            throw new InsufficientException();
+        }
         this.name = name;
         this.done = false;
     }
@@ -20,4 +27,5 @@ public class Task implements Serializable {
     public boolean getMarked() {
         return done;
     }
+
 }

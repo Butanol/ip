@@ -1,5 +1,7 @@
+package Shaniqua;
+
 import java.io.IOException;
-import java.util.Objects;
+
 import java.util.Scanner;
 
 public class Shaniqua {
@@ -14,7 +16,7 @@ public class Shaniqua {
                 switch (commands[0]) {
                 case "bye":
                     System.out.println("Bye. Hope to see you again soon!");
-                    break;
+                    return;
                 case "list":
                     tasks.list();
                     break;
@@ -74,6 +76,8 @@ public class Shaniqua {
                 System.out.println("Oops, I've got an error: " + e.getMessage());
             } catch (IOException e) {
                 System.out.println("Oops, I can't do that! " + e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -88,21 +92,41 @@ public class Shaniqua {
         StringBuilder res = new StringBuilder();
         for (int i = 1; i < temp.length; i++) {
             res.append(temp[i]);
+            res.append(" ");
         }
-        return new String[]{temp[0], res.toString()};
+        return new String[]{temp[0], res.toString().trim()};
     }
 
     private static String[] handleDeadline(String param) throws ChatException {
         String[] res = param.split("/by");
-        if (res.length == 1) throw new InsufficientException();
-        return res;
+        if (res.length < 2) throw new InsufficientException();
+        return new String[]{res[0].trim(), res[1].trim()};
     }
     private static String[] handleEvent(String param) throws ChatException {
-        String[] res = param.split("/by|/from");
-        if (res.length < 3) throw new InsufficientException();
-        return param.split("/to|/from");
+        String[] res = param.split(" ");
+        String[] reorderedString = new String[3];
+        if (res.length < 5) throw new InsufficientException();
+        reorderedString[0] = res[0];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = res[i].trim();
+            if (res[i].isEmpty()) {
+                throw new InsufficientException();
+            }
+            if (res[i].equals("/to")) {
+                if (i + 1 >= res.length) {
+                    throw new InsufficientException();
+                }
+                reorderedString[2] = res[i + 1].trim();
+            } else if (res[i].equals("/from")) {
+                if (i + 1 >= res.length) {
+                    throw new InsufficientException();
+                }
+                reorderedString[1] = res[i + 1].trim();
+            }
+        }
+        return reorderedString;
     }
-    private static boolean isInteger(String param) {
+    protected static boolean isInteger(String param) {
         try {
             Integer.valueOf(param);
             return true;
@@ -110,5 +134,6 @@ public class Shaniqua {
             return false;
         }
     }
+
 }
 
