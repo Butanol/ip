@@ -28,6 +28,7 @@ public class Shaniqua {
                 Command cmd = Parser.parse(input);
                 if (cmd == null) {
                     ui.invalidInput();
+                    continue;
                 }
                 cmd.execute(tasks, ui, storage);
                 isExit = cmd.isExit();
