@@ -20,13 +20,13 @@ public class Deadline extends Task {
 
     /**
      * Compares two deadline objects for equality
-     * @param O the object to compare with deadline.
+     * @param object the object to compare with deadline.
      * @return boolean of status of equality.
      */
     @Override
-    public boolean equals(Object O) {
-        if (O instanceof Deadline) {
-            Deadline temp = (Deadline) O;
+    public boolean equals(Object object) {
+        if (object instanceof Deadline) {
+            Deadline temp = (Deadline) object;
             return super.name == temp.name && this.dateTime == temp.dateTime;
         }
         return false;

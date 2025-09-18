@@ -105,13 +105,13 @@ public class FlexibleDateTime implements Serializable {
 
     /**
      * Compares FlexibleDateTime with object O for equality.
-     * @param O object to be compared
+     * @param object object to be compared
      * @return boolean of equality
      */
     @Override
-    public boolean equals(Object O) {
-        if (O instanceof FlexibleDateTime) {
-            FlexibleDateTime temp = (FlexibleDateTime) O;
+    public boolean equals(Object object) {
+        if (object instanceof FlexibleDateTime) {
+            FlexibleDateTime temp = (FlexibleDateTime) object;
             return this.dateTime.equals(temp.dateTime);
         }
         return false;

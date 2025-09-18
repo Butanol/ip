@@ -23,12 +23,12 @@ public class Event extends Task {
 
     /**
      * Compares event object with Object o for equality
-     * @param O the object to compare with task.
+     * @param object the object to compare with task.
      * @return boolean of equality
      */
-    public boolean equals(Object O) {
-        if (O instanceof Event) {
-            Event temp = (Event) O;
+    public boolean equals(Object object) {
+        if (object instanceof Event) {
+            Event temp = (Event) object;
             return super.name == temp.name && this.from == temp.from && this.to == temp.to;
         }
         return false;

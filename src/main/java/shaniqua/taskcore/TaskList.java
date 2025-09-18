@@ -89,6 +89,23 @@ public class TaskList implements Serializable {
     }
 
     /**
+     * Prints list of items in search
+     * @param searchTerm String to search for
+     */
+    public void find(String searchTerm) {
+        int count = 0;
+        for (int i = 0; i < getLength(); i++) {
+            if (getTask(i).getName().contains(searchTerm)) {
+                System.out.printf("%d. " + tasks.get(i).toString() + "\n", i + 1);
+                count = count + 1;
+            }
+        }
+        if (count == 0) {
+            System.out.println("There aren't any tasks that match your search :(");
+        }
+    }
+
+    /**
      * Returns number of tasks in TaskList
      * @return integer of the number of tasks in TaskList
      */
@@ -98,13 +115,13 @@ public class TaskList implements Serializable {
 
     /**
      * Compares instance of TaskList with Object O for equality
-     * @param O object to be compared with TaskList
+     * @param object object to be compared with TaskList
      * @return boolean of equality
      */
-    public boolean equals(Object O) {
-        if (O instanceof TaskList) {
-            TaskList temp = (TaskList) O;
-            if (temp.getLength() == this.getLength()){
+    public boolean equals(Object object) {
+        if (object instanceof TaskList) {
+            TaskList temp = (TaskList) object;
+            if (temp.getLength() == this.getLength()) {
                 for (int i = 0; i < this.getLength(); i++) {
                     if (this.getTask(i).equals(temp.getTask(i))) {
                         return false;

@@ -51,18 +51,22 @@ public abstract class Task implements Serializable {
         return done;
     }
 
+    public String getName() {
+        return name;
+    }
+
     /**
      * Compares Task Object with another for equality
-     * @param O the object to compare with task.
+     * @param object the object to compare with task.
      * @return true if objects are equal, false otherwise
      */
     @Override
-    public boolean equals(Object O) {
-        if (this == O) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (O instanceof Task) {
-            Task temp = (Task) O;
+        if (object instanceof Task) {
+            Task temp = (Task) object;
             return temp.name == this.name;
         }
         return false;
