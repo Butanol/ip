@@ -67,9 +67,6 @@ public class Parser {
         case "event" -> {
             String[] paramsEvents =
                     handleEvent(processedIn[1]);
-            for (String i: paramsEvents) {
-                System.out.println(i);
-            }
             yield new AddTaskCommand(new Event(paramsEvents[0], paramsEvents[1],
                     paramsEvents[2]));
         }
@@ -113,15 +110,15 @@ public class Parser {
     }
     private static String[] handleEvent(String param) throws ParserException {
         String[] res = param.split(" ");
-        String[] reorderedString = new String[3];
+        String[] outputParams = new String[3];
         if (res.length < 5 || res.length > 7) {
             throw new ParserException();
         }
-        reorderedString[0] = res[0];
         int fromIdx = 0;
         StringBuilder fromString = new StringBuilder();
         int toIdx = 0;
         StringBuilder toString = new StringBuilder();
+        StringBuilder nameString = new StringBuilder();
 
         for (int i = 0; i < res.length; i++) {
             res[i] = res[i].trim();
@@ -132,12 +129,18 @@ public class Parser {
                 toIdx = i;
             } else if (res[i].equals("/from")) {
                 fromIdx = i;
-                reorderedString[1] = res[i + 1].trim();
+                outputParams[1] = res[i + 1].trim();
             }
         }
         int left = Math.min(fromIdx, toIdx);
         int right = Math.max(fromIdx, toIdx);
-        for (int i = 1; i < res.length; i++) {
+        for (int i = 0; i < res.length; i++) {
+            if (i < left) {
+                nameString.append(res[i]);
+                if (i != left - 1) {
+                    nameString.append(" ");
+                }
+            }
             if (i > left && i < right) {
                 if (left == fromIdx) {
                     fromString.append(" ").append(res[i]);
@@ -152,9 +155,10 @@ public class Parser {
                 }
             }
         }
-        reorderedString[1] = fromString.toString().trim();
-        reorderedString[2] = toString.toString().trim();
-        return reorderedString;
+        outputParams[0] = nameString.toString();
+        outputParams[1] = fromString.toString().trim();
+        outputParams[2] = toString.toString().trim();
+        return outputParams;
     }
     private static boolean isInteger(String param) {
         try {
