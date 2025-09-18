@@ -18,29 +18,46 @@ public class Storage {
     private String filePath;
     private Path folder;
 
+    /**
+     * Constructs storage object to handle save and load functionality.
+     *
+     * @param filePath folder from which to read and write the serialised file.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
         folder = Paths.get(filePath);
     }
 
-    public void saveToFile(TaskList t) throws IOException {
-        if (!Files.exists(folder)) {
-            Files.createDirectories(folder); // create "data" folder if missing
+    /**
+     * Saves TaskList object to serialised file. Tasks written to file individually
+     * to limit effect of corruption.
+     *
+     * @param t Tasklist Object to be written to file
+     * @throws StorageException if writing fails.
+     */
+    public void saveToFile(TaskList t) throws StorageException {
+        try {
+            if (!Files.exists(folder)) {
+                Files.createDirectories(folder); // create "data" folder if missing
+            }
+            File saveFile = Paths.get(filePath, "tasks.ser").toFile();
+            FileOutputStream outputStream = new FileOutputStream(saveFile);
+            ObjectOutputStream outputObject = new ObjectOutputStream(outputStream);
+            for (int i = 0; i < t.getLength(); i++) {
+                outputObject.writeObject(t.getTask(i));
+            }
+            outputObject.flush();
+            outputObject.close();
+        } catch (IOException e) {
+            throw new StorageException(e.getMessage());
         }
-        File saveFile = Paths.get(filePath, "tasks.ser").toFile();
-        FileOutputStream outputStream = new FileOutputStream(saveFile);
-        ObjectOutputStream outputObject = new ObjectOutputStream(outputStream);
-        for (int i = 0; i < t.getLength(); i++) {
-            outputObject.writeObject(t.getTask(i));
-        }
-        outputObject.flush();
-        outputObject.close();
     }
 
     /**
-     * Loads saved tasks.
+     * Loads saved tasks from file. Catches ClassNotFoundException if byte is corrupted.
      *
-     * @throws StorageException if
+     * @param t TaskList to write to. Since only tasks written, it is necessary.
+     * @throws StorageException if file is not found, or unexpected error occurs.
      *
      */
     public void loadTasks(TaskList t) throws StorageException {

@@ -10,12 +10,24 @@ public class TaskList implements Serializable {
 
     private final ArrayList<Task> tasks;
 
+    /**
+     * Constructs TaskList
+     */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
-    public void addTask(Task x) {
-        tasks.add(x);
+
+    /**
+     * Adds Task to TaskList
+     * @param task Task to be added
+     */
+    public void addTask(Task task) {
+        tasks.add(task);
     }
+
+    /**
+     * Prints out a numbered list of tasks in TaskList
+     */
     public void list() {
         System.out.println("Here are the tasks in your list:");
         if (tasks.isEmpty()) {
@@ -26,24 +38,48 @@ public class TaskList implements Serializable {
             System.out.printf("%d. " + tasks.get(i).toString() + "\n", i + 1);
         }
     }
+
+    /**
+     * Marks task at index as completed
+     * @param idx integer of position of task in TaskList
+     * @throws TaskListException if task is not found
+     */
     public void mark(int idx) throws TaskListException {
         if (idx > this.tasks.size() || idx <= 0) {
             throw new TaskListException("Task not found");
         }
         tasks.get(idx - 1).mark();
     }
+
+    /**
+     * Marks task at index as uncompleted
+     * @param idx integer of position of task in TaskList
+     * @throws TaskListException if task is not found
+     */
     public void unmark(int idx) throws TaskListException {
         if (idx > this.tasks.size() || idx <= 0) {
             throw new TaskListException("Task not found");
         }
         tasks.get(idx - 1).unmark();
     }
+
+    /**
+     * Removes task at index
+     * @param idx integer of position of task in TaskList
+     * @throws TaskListException if task is not found
+     */
     public void remove(int idx) throws TaskListException {
         if (idx > this.tasks.size() || idx <= 0) {
             throw new TaskListException("Task not found");
         }
         tasks.remove(idx - 1);
     }
+
+    /**
+     * Returns Task at index
+     * @param idx integer of position of task in TaskList
+     * @return Task at index.
+     */
     public Task getTask(int idx) {
         if (idx >= tasks.size()) {
             System.out.println("Invalid Task");
@@ -51,9 +87,20 @@ public class TaskList implements Serializable {
         }
         return tasks.get(idx);
     }
+
+    /**
+     * Returns number of tasks in TaskList
+     * @return integer of the number of tasks in TaskList
+     */
     public int getLength() {
         return tasks.size();
     }
+
+    /**
+     * Compares instance of TaskList with Object O for equality
+     * @param O object to be compared with TaskList
+     * @return boolean of equality
+     */
     public boolean equals(Object O) {
         if (O instanceof TaskList) {
             TaskList temp = (TaskList) O;

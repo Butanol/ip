@@ -15,6 +15,15 @@ import shaniqua.taskcore.tasks.InvalidTaskDataException;
 import shaniqua.taskcore.tasks.Todo;
 
 public class Parser {
+    /**
+     * Parses user input string and returns corresponding Command Object.
+     * Interprets command type and extracts parameters using private command-specific handlers
+     *
+     * @param in the string from user input to be parsed
+     * @return Command Object associated with input or null if invalid command
+     * @throws ParserException if input format is invalid or parameters are missing
+     * @throws InvalidTaskDataException if task data (name/ date) is invalid.
+     */
     public static Command parse(String in) throws ParserException, InvalidTaskDataException {
         String[] processedIn = handleInput(in);
         int idx;

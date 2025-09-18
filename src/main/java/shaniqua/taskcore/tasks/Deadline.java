@@ -3,6 +3,12 @@ package shaniqua.taskcore.tasks;
 public class Deadline extends Task {
     private final FlexibleDateTime dateTime;
 
+    /**
+     * Constructs deadline object
+     * @param name string of description
+     * @param by string input of time task is due by
+     * @throws InvalidTaskDataException if date is entered wrongly
+     */
     public Deadline(String name, String by) throws InvalidTaskDataException {
         super(name);
         try {
@@ -11,6 +17,13 @@ public class Deadline extends Task {
             throw new InvalidTaskDataException("Invalid date/ time entry");
         }
     }
+
+    /**
+     * Compares two deadline objects for equality
+     * @param O the object to compare with deadline.
+     * @return boolean of status of equality.
+     */
+    @Override
     public boolean equals(Object O) {
         if (O instanceof Deadline) {
             Deadline temp = (Deadline) O;
@@ -18,6 +31,11 @@ public class Deadline extends Task {
         }
         return false;
     }
+
+    /**
+     * Returns String representation of the task.
+     * @return String representation
+     */
     public String toString() {
         return "[D] " + super.toString() + String.format(" (by: %s)", dateTime.toString());
     }

@@ -10,10 +10,18 @@ public class FlexibleDateTime implements Serializable {
     private final long serialVersionUID = 1L;
     private final LocalDateTime dateTime;
     private boolean hasTime; // true: LocalDateTime behaviour; false: LocalDate behaviour;
+
     private FlexibleDateTime(LocalDateTime dateTime, boolean hasTime) {
         this.dateTime = dateTime;
         this.hasTime = hasTime;
     }
+
+    /**
+     * Factory method of FlexibleDateTime that parses input string.
+     * @param in string representation of date (and time if present)
+     * @return FlexibleDateTime instance
+     * @throws FlexibleDateTimeException if the formatter has an error parsing
+     */
     public static FlexibleDateTime parse(String in) throws FlexibleDateTimeException {
         LocalDateTime tempDateTime = null;
         boolean hasTimeTemp = false;
@@ -34,6 +42,7 @@ public class FlexibleDateTime implements Serializable {
         }
         throw new FlexibleDateTimeException("Invalid Input");
     };
+
     private static boolean isDate(String date) {
         String[] dateArr = date.split("-");
         if (dateArr.length != 3) {
@@ -78,12 +87,27 @@ public class FlexibleDateTime implements Serializable {
         }
     }
 
+    /**
+     * Gets internal LocalDateTime representation
+     * @return LocalDateTime representation
+     */
     public LocalDateTime get() {
         return dateTime;
     }
+
+    /**
+     * Gets status of whether the FlexibleDateTime object has time.
+     * @return
+     */
     public boolean hasTime() {
         return hasTime;
     }
+
+    /**
+     * Compares FlexibleDateTime with object O for equality.
+     * @param O object to be compared
+     * @return boolean of equality
+     */
     @Override
     public boolean equals(Object O) {
         if (O instanceof FlexibleDateTime) {
@@ -92,6 +116,12 @@ public class FlexibleDateTime implements Serializable {
         }
         return false;
     }
+
+    /**
+     * Returns string representation of FlexibleDateTime in form "mmm dd yyyy",
+     * with time if present
+     * @return string representation of FlexibleDateTime
+     */
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy");
