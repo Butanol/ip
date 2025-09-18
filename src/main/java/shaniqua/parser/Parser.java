@@ -4,6 +4,7 @@ import shaniqua.command.AddTaskCommand;
 import shaniqua.command.Command;
 import shaniqua.command.DeleteTaskCommand;
 import shaniqua.command.ExitCommand;
+import shaniqua.command.FindCommand;
 import shaniqua.command.ListCommand;
 import shaniqua.command.LoadCommand;
 import shaniqua.command.MarkCommand;
@@ -79,6 +80,9 @@ public class Parser {
             System.out.println("Doing so will replace the entire list. Are you sure? (y/n)");
             yield new LoadCommand();
         }
+        case "find" -> {
+            yield new FindCommand(processedIn[1]);
+        }
         default -> {
             yield null;
         }
@@ -140,7 +144,7 @@ public class Parser {
                 } else {
                     toString.append(" ").append(res[i]);
                 }
-            } else if (i > right){
+            } else if (i > right) {
                 if (right == toIdx) {
                     toString.append(" ").append(res[i]);
                 } else {
