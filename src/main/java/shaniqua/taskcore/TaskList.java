@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import shaniqua.taskcore.tasks.Task;
+import shaniqua.ui.Ui;
 
 public class TaskList implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -28,14 +29,14 @@ public class TaskList implements Serializable {
     /**
      * Prints out a numbered list of tasks in TaskList
      */
-    public void list() {
+    public void list(Ui ui) {
         System.out.println("Here are the tasks in your list:");
         if (tasks.isEmpty()) {
-            System.out.println("Looks pretty empty ja. Populate it with tasks!");
+            ui.output("Looks pretty empty ja. Populate it with tasks!");
             return;
         }
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.printf("%d. " + tasks.get(i).toString() + "\n", i + 1);
+            ui.output(String.format("%d. ", i + 1) + tasks.get(i).toString());
         }
     }
 
@@ -91,12 +92,13 @@ public class TaskList implements Serializable {
     /**
      * Prints list of items in search
      * @param searchTerm String to search for
+     * @param ui ui input from executing command
      */
-    public void find(String searchTerm) {
+    public void find(String searchTerm, Ui ui) {
         int count = 0;
         for (int i = 0; i < getLength(); i++) {
             if (getTask(i).getName().contains(searchTerm)) {
-                System.out.printf("%d. " + tasks.get(i).toString() + "\n", i + 1);
+                ui.output(String.format("%d. ", i + 1) + tasks.get(i).toString());
                 count = count + 1;
             }
         }

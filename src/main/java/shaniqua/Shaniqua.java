@@ -1,15 +1,19 @@
 package shaniqua;
 
 import shaniqua.command.Command;
+import shaniqua.gui.GuiController;
 import shaniqua.parser.Parser;
 import shaniqua.storage.Storage;
 import shaniqua.taskcore.TaskList;
 import shaniqua.ui.Ui;
 
+import java.util.concurrent.CompletableFuture;
+
 public class Shaniqua {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
+    private GuiController controller;
 
     /**
      * Constructs Shaniqua object with filepath
@@ -25,6 +29,7 @@ public class Shaniqua {
      * Runs chatbot
      */
     public void run() {
+        GuiController.launch(this);
         ui.greeting();
         boolean isExit = false;
         while (!isExit) {
@@ -40,6 +45,7 @@ public class Shaniqua {
             } catch (ShaniquaException e) {
                 ui.error(e);
             }
+            ui.endOutput();
         }
         ui.farewell();
     }
@@ -50,6 +56,10 @@ public class Shaniqua {
      */
     public static void main(String[] args) {
         new Shaniqua("data/tasks.ser").run();
+    }
+
+    public Ui getUi() {
+        return ui;
     }
 }
 
