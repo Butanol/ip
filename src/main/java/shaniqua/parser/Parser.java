@@ -103,12 +103,12 @@ public class Parser {
      */
     private static String[] handleInput(String param) {
         String[] temp = param.split(" ");
-        StringBuilder res = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (int i = 1; i < temp.length; i++) {
-            res.append(temp[i]);
-            res.append(" ");
+            sb.append(temp[i]);
+            sb.append(" ");
         }
-        return new String[]{temp[0], res.toString().trim()};
+        return new String[]{temp[0], sb.toString().trim()};
     }
 
     private static String[] handleTag(String param) throws ParserException {
