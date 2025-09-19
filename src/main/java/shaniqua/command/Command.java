@@ -14,7 +14,7 @@ public abstract class Command {
      * @param storage the storage system for persistence
      * @throws CommandFailException if the command execution fails
      */
-    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws CommandFailException;
+    public abstract void execute(TaskList tasks, Ui ui, Storage storage);
 
     /**
      * Checks if this command should cause the application to exit.

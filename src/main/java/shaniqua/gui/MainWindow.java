@@ -1,5 +1,8 @@
 package shaniqua.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.application.Platform;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -7,7 +10,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+
+import javafx.util.Duration;
+import shaniqua.Shaniqua;
 import shaniqua.ui.Ui;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Controller for the main GUI.
@@ -22,6 +30,7 @@ public class MainWindow extends AnchorPane {
     @FXML
     private Button sendButton;
 
+    private Shaniqua shaniqua;
     private Ui ui;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user-avatar.jpg"));
@@ -29,12 +38,19 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void initialize() {
+        String greetingString = "Kia Ora! I'm Shaniqua! What can I do you for?";
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.getChildren().addAll(
+                DialogBox.getOutputDialog(greetingString, shanImage)
+        );
     }
 
-    /** Injects the Duke instance */
-    public void setUi(Ui ui) {
-        this.ui = ui;
+    /**
+     * Injects the Duke instance
+     */
+    public void setBot(Shaniqua bot) {
+        shaniqua = bot;
+        ui = shaniqua.getUi();
     }
 
     /**
@@ -44,12 +60,30 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
-        ui.provideResponse(input);
-        String response = ui.getOutput();
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getOutputDialog(response, shanImage)
+        CompletableFuture.supplyAsync(() -> {
+            return ui.handle(input, shaniqua);
+        }).thenAccept(response -> {
+            Platform.runLater(() -> {
+                dialogContainer.getChildren().addAll(
+                        DialogBox.getUserDialog(input, userImage),
+                        DialogBox.getOutputDialog(response, shanImage)
+                );
+                userInput.clear();
+            });
+        }).thenRun(() -> {
+            if (ui.shouldExit()) {
+                handleExit();
+            }
+        });
+    }
+
+    private void handleExit() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(2), e -> {
+                    Platform.exit();
+                    System.exit(0);
+                })
         );
-        userInput.clear();
+        timeline.play();
     }
 }

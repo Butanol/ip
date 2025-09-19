@@ -14,8 +14,14 @@ import shaniqua.taskcore.tasks.Deadline;
 import shaniqua.taskcore.tasks.Event;
 import shaniqua.taskcore.tasks.InvalidTaskDataException;
 import shaniqua.taskcore.tasks.Todo;
+import shaniqua.ui.Ui;
 
 public class Parser {
+    private static Ui ui;
+
+    public static void setUi(Ui ui) {
+        Parser.ui = ui;
+    }
     /**
      * Parses user input string and returns corresponding Command Object.
      * Interprets command type and extracts parameters using private command-specific handlers
@@ -74,7 +80,6 @@ public class Parser {
             yield new StoreCommand();
         }
         case "load" -> {
-            System.out.println("Doing so will replace the entire list. Are you sure? (y/n)");
             yield new LoadCommand();
         }
         case "find" -> {

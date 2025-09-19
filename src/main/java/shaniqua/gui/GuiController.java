@@ -8,24 +8,19 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import shaniqua.Shaniqua;
-import shaniqua.ui.Ui;
 
 /**
  * A GUI for Duke using FXML.
  */
 public class GuiController extends Application {
-    private static Shaniqua shaniqua;
-    public static void launch(Shaniqua s) {
-        shaniqua = s;
-        Application.launch(GuiController.class);
-    }
+    private Shaniqua shaniqua = new Shaniqua("data");
 
     @Override
     public void start(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Shaniqua.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
-            fxmlLoader.<MainWindow>getController().setUi(shaniqua.getUi());  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setBot(shaniqua);  // inject the Duke instance
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             stage.show();

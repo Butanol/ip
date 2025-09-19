@@ -15,12 +15,11 @@ public class LoadCommand extends Command {
      * @param storage the storage system to load tasks from
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        if (ui.isConfirmed("Doing so may create duplicates.")) {
-            try {
-                storage.loadTasks(tasks);
-            } catch (StorageException e) {
-                return;
-            }
+        try {
+            int count = storage.loadTasks(tasks);
+            ui.loadSuccess(count);
+        } catch (StorageException e) {
+            ui.error(e);
         }
     }
 }

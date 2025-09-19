@@ -1,5 +1,6 @@
 package shaniqua.command;
 
+import shaniqua.ShaniquaException;
 import shaniqua.storage.Storage;
 import shaniqua.taskcore.TaskList;
 import shaniqua.ui.Ui;
@@ -21,6 +22,11 @@ public class UnmarkCommand extends ModifyCommand {
      * @param storage the storage system (unused in this command)
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        tasks.getTask(idx).unmark();
+        try {
+            tasks.unmark(idx);
+            ui.taskUnmarked(tasks.getTask(idx).toString());
+        } catch (ShaniquaException e) {
+            ui.error(e);
+        }
     }
 }

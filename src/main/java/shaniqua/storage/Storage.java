@@ -60,7 +60,7 @@ public class Storage {
      * @throws StorageException if file is not found, or unexpected error occurs.
      *
      */
-    public void loadTasks(TaskList t) throws StorageException {
+    public int loadTasks(TaskList t) throws StorageException {
         File saveFile = Paths.get(filePath, "tasks.ser").toFile();
         if (!Files.exists(folder) || !saveFile.exists()) {
             throw new StorageException("File not found");
@@ -68,7 +68,6 @@ public class Storage {
         try {
             FileInputStream inputStream = new FileInputStream(saveFile);
             ObjectInputStream inputObject = new ObjectInputStream(inputStream);
-            boolean isEmpty = true;
             int count = 0;
             while (true) {
                 try {
@@ -83,7 +82,7 @@ public class Storage {
                     break;
                 }
             }
-            System.out.printf("Successfully loaded %d tasks\n", count);
+            return count;
         } catch (IOException e) {
             throw new StorageException("File not found");
         }

@@ -10,7 +10,6 @@ public class FindCommand extends Command {
         this.searchTerm = searchTerm;
     }
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        System.out.println("Here are the matching tasks in your list:");
         tasks.find(searchTerm, ui);
     }
 }

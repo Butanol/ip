@@ -24,11 +24,12 @@ public class DeleteTaskCommand extends ModifyCommand {
      * @throws CommandFailException if the task cannot be removed (e.g., invalid index)
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws CommandFailException {
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
             tasks.remove(idx);
+            ui.taskDeleted(tasks.getLength());
         } catch (TaskListException e) {
-            throw new CommandFailException(e.getMessage());
+            ui.error(e);
         }
     }
 }

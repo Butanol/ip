@@ -23,39 +23,25 @@ public class Shaniqua {
         this.storage = new Storage(filepath);
         this.ui = new Ui();
         tasks = new TaskList();
+        Parser.setUi(ui);
     }
 
     /**
      * Runs chatbot
      */
-    public void run() {
-        GuiController.launch(this);
-        ui.greeting();
+    public void handle(String input) {
         boolean isExit = false;
-        while (!isExit) {
-            try {
-                String input = ui.readCommand();
-                Command cmd = Parser.parse(input);
-                if (cmd == null) {
-                    ui.invalidInput();
-                    continue;
-                }
-                cmd.execute(tasks, ui, storage);
-                isExit = cmd.isExit();
-            } catch (ShaniquaException e) {
-                ui.error(e);
+        try {
+            Command cmd = Parser.parse(input);
+            if (cmd == null) {
+                ui.invalidInput();
+                return;
             }
-            ui.endOutput();
+            cmd.execute(tasks, ui, storage);
+            isExit = cmd.isExit();
+        } catch (ShaniquaException e) {
+            ui.error(e);
         }
-        ui.farewell();
-    }
-
-    /**
-     * Main argument that starts chatbot.
-     * @param args
-     */
-    public static void main(String[] args) {
-        new Shaniqua("data/tasks.ser").run();
     }
 
     public Ui getUi() {

@@ -30,14 +30,12 @@ public class TaskList implements Serializable {
      * Prints out a numbered list of tasks in TaskList
      */
     public void list(Ui ui) {
-        System.out.println("Here are the tasks in your list:");
-        if (tasks.isEmpty()) {
-            ui.output("Looks pretty empty ja. Populate it with tasks!");
-            return;
-        }
+        StringBuilder temp = new StringBuilder();
+        int count = 0;
         for (int i = 0; i < tasks.size(); i++) {
-            ui.output(String.format("%d. ", i + 1) + tasks.get(i).toString());
+            temp.append(String.format("%d. ", i + 1)).append(tasks.get(i).toString()).append("\n");
         }
+        ui.showTasks(temp.toString());
     }
 
     /**
@@ -96,15 +94,14 @@ public class TaskList implements Serializable {
      */
     public void find(String searchTerm, Ui ui) {
         int count = 0;
+        StringBuilder temp = new StringBuilder();
         for (int i = 0; i < getLength(); i++) {
             if (getTask(i).getName().contains(searchTerm)) {
-                ui.output(String.format("%d. ", i + 1) + tasks.get(i).toString());
+                temp.append(String.format("%d. ", i + 1)).append(tasks.get(i).toString()).append("\n");
                 count = count + 1;
             }
         }
-        if (count == 0) {
-            System.out.println("There aren't any tasks that match your search :(");
-        }
+        ui.showFoundTasks(temp.toString(), count);
     }
 
     /**

@@ -13,11 +13,12 @@ public class StoreCommand extends Command {
      * @param ui the user interface for interaction (unused in current implementation)
      * @param storage the storage system for persistence (unused in current implementation)
      */
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws CommandFailException {
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
             storage.saveToFile(tasks);
+            ui.saveSuccess();
         } catch (StorageException e) {
-            throw new CommandFailException(e.getMessage());
+            ui.error(e);
         }
     }
 }
