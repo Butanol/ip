@@ -24,6 +24,7 @@ public class Storage {
      * @param filePath folder from which to read and write the serialised file.
      */
     public Storage(String filePath) {
+        assert !filePath.isEmpty(): "File path must be valid";
         this.filePath = filePath;
         folder = Paths.get(filePath);
     }
@@ -36,6 +37,8 @@ public class Storage {
      * @throws StorageException if writing fails.
      */
     public void saveToFile(TaskList t) throws StorageException {
+        assert t != null : "TaskList cannot be null";
+
         try {
             if (!Files.exists(folder)) {
                 Files.createDirectories(folder); // create "data" folder if missing

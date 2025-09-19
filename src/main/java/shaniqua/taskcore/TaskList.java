@@ -23,6 +23,7 @@ public class TaskList implements Serializable {
      * @param task Task to be added
      */
     public void addTask(Task task) {
+        assert task != null : "Task cannot be null";
         tasks.add(task);
     }
 
@@ -80,7 +81,7 @@ public class TaskList implements Serializable {
      * @return Task at index.
      */
     public Task getTask(int idx) {
-        if (idx >= tasks.size()) {
+        if (idx >= tasks.size() || idx < 0) {
             System.out.println("Invalid Task");
             return null;
         }
