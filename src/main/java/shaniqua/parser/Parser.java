@@ -9,6 +9,7 @@ import shaniqua.command.ListCommand;
 import shaniqua.command.LoadCommand;
 import shaniqua.command.MarkCommand;
 import shaniqua.command.StoreCommand;
+import shaniqua.command.TagCommand;
 import shaniqua.command.UnmarkCommand;
 import shaniqua.taskcore.tasks.Deadline;
 import shaniqua.taskcore.tasks.Event;
@@ -85,6 +86,10 @@ public class Parser {
         case "find" -> {
             yield new FindCommand(processedIn[1]);
         }
+        case "tag" -> {
+            String[] params = handleTag(processedIn[1]);
+            yield new TagCommand(Integer.parseInt(params[0]), params[1]);
+        }
         default -> {
             yield null;
         }
@@ -106,6 +111,18 @@ public class Parser {
         return new String[]{temp[0], res.toString().trim()};
     }
 
+    private static String[] handleTag(String param) throws ParserException {
+        String[] temp = param.split(" ");
+        if (temp.length < 2) {
+            throw new ParserException();
+        }
+        StringBuilder tag = new StringBuilder();
+        for (int i = 1; i < temp.length; i++) {
+            tag.append(temp[i]).append(" ");
+        }
+        return new String[]{temp[0], tag.toString().trim()};
+    }
+
     private static String[] handleDeadline(String param) throws ParserException {
         String[] res = param.split("/by");
         if (res.length < 2) {
@@ -113,6 +130,7 @@ public class Parser {
         }
         return new String[]{res[0].trim(), res[1].trim()};
     }
+
     private static String[] handleEvent(String param) throws ParserException {
         String[] res = param.split(" ");
         String[] outputParams = new String[3];

@@ -118,7 +118,6 @@ public class Ui {
         } else {
             output(taskList);
         }
-        output(taskList);
     }
 
     /**

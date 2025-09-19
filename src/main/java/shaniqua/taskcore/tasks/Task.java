@@ -1,10 +1,12 @@
 package shaniqua.taskcore.tasks;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public abstract class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     private boolean done;
+    private ArrayList<String> tags = new ArrayList<>();
     String name;
 
     /**
@@ -20,13 +22,21 @@ public abstract class Task implements Serializable {
         this.done = false;
     }
 
+    public void tag(String tag) {
+        tags.add(tag);
+    }
+
     /**
      * Returns string representation of Task, including whether it is done
      * @return String representation of task
      */
     @Override
     public String toString() {
-        return String.format("[%s] ", done ? "X" : " ") + name;
+        StringBuilder tagString = new StringBuilder();
+        for (int i = 0; i < tags.size(); i++) {
+            tagString.append("#" + tags.get(i)).append(" ");
+        }
+        return String.format("[%s] ", done ? "X" : " ") + name + tagString.toString();
     }
 
     /**
