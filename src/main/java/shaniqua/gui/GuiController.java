@@ -20,7 +20,7 @@ public class GuiController extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Shaniqua.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
-            fxmlLoader.<MainWindow>getController().setBot(shaniqua);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setBot(shaniqua); // inject the Duke instance
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             stage.show();

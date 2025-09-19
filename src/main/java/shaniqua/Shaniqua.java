@@ -7,8 +7,6 @@ import shaniqua.storage.Storage;
 import shaniqua.taskcore.TaskList;
 import shaniqua.ui.Ui;
 
-import java.util.concurrent.CompletableFuture;
-
 public class Shaniqua {
     private Storage storage;
     private TaskList tasks;

@@ -52,7 +52,7 @@ shadowJar {
 }
 
 tasks.withType(Checkstyle).configureEach {
-    enabled = false
+    enabled = false;
 }
 
 run{

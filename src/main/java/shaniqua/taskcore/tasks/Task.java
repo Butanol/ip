@@ -5,7 +5,7 @@ import java.io.Serializable;
 public abstract class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     private boolean done;
-    final String name;
+    String name;
 
     /**
      * Constructs Task object.
